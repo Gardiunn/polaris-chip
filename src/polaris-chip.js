@@ -1,7 +1,7 @@
 // we import JS code into this JS code. Modular javascript is a big deal
 // more modern (relatively speaking) and allows the web to feel like
 // a full blown development environment
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css } from "lit";
 
 // export means that other JS files can reference this JS file and
 // pull in this class
@@ -22,13 +22,13 @@ export class PolarisChip extends LitElement {
   // I glance and go "oh the HTML tag for this code is called polaris-chip"
   // see the very bottom of the file for where this is actually implemented
   static get tag() {
-    return 'polaris-chip';
+    return "polaris-chip";
   }
   // constructor establishes defaults for the class
   constructor() {
     super();
     // a variable on this object called title
-    this.title = 'Chip Default';
+    this.title = "Chip Default";
   }
 
   // CSS styles are scoped JUST to this element. This uses a technology called
@@ -39,7 +39,7 @@ export class PolarisChip extends LitElement {
     // "css" called here is actually a function exported from Lit at the top
     // so that it scopes the CSS nicely and also applies sanitization
     return css`
-    /*
+      /*
       :host is a special selector meaning "the tag itself"
       Think of if we were looking at how a <strong> tag is made. It would have
       :host { font-weight: bold; display: inline; }
