@@ -13,16 +13,28 @@ export class MyCard extends LitElement {
 
   constructor() {
     super();
-    this.title = "Title";
-    this.link = "hax.psu.edu";
-    this.detail = "Details";
-    this.description = "A squirrel in a field eating a nut.";
+    this.title = "";
+    this.link = "";
+    this.buttonText = "";
+    this.description = "";
+    this.image = "";
+    this.fancy = false;
   }
 
   static get styles() {
     return css`
       :host {
-        display: block;
+        display: inline-block;
+      }
+      :host([fancy]) {
+        display: inline-block;
+        background-color: lightblue;
+        border: 2px solid coral;
+        box-shadow: 10px 5px 5px red;
+
+        .card {
+          background-color: orange;
+        }
       }
       .controls {
         margin: 8px 0;
@@ -68,36 +80,60 @@ export class MyCard extends LitElement {
         margin-bottom: 20px;
         border-radius: 16px;
         font-size: 24px;
-        visibility: hidden;
       }
 
       .details:hover {
         cursor: pointer;
       }
 
-      @media screen and (max-width: 800px) and (min-width: 500px) {
-        .details {
-          visibility: visible;
-        }
+      details summary {
+        text-align: left;
+        font-size: 20px;
+        padding: 8px 0;
+      }
+
+      details[open] summary {
+        font-weight: bold;
+      }
+
+      details div {
+        border: 2px solid black;
+        text-align: left;
+        padding: 8px;
+        height: 70px;
+        overflow: auto;
       }
     `;
+  }
+
+  // put this anywhere on the MyCard class; just above render() is probably good
+  openChanged(e) {
+    console.log(e.newState);
+    if (e.newState === "open") {
+      this.fancy = true;
+    } else {
+      this.fancy = false;
+    }
   }
 
   render() {
     return html`
       <div id="cardlist">
         <div class="card">
-          <img
-            class="card-image"
-            src="https://th.bing.com/th/id/OIP.2KDrlQ3f5OSl13qi2Z3kgQHaEo?rs=1&pid=ImgDetMain"
-          />
+          <img class="card-image" src=${this.image} />
 
           <h1 class="title">${this.title}</h1>
 
-          <p class="desc">${this.description}</p>
+          <!-- put this in your render method where you had details -->
+          <details ?open="${this.fancy}" @toggle="${this.openChanged}">
+            <summary>Description</summary>
+            <div>
+              <slot>${this.description}</slot>
+            </div>
+          </details>
 
           <a class="link" href=${this.link}>
-            <button class="details">${this.detail}</button>
+            <button class="details">${this.buttonText}</button>
           </a>
         </div>
       </div>
@@ -108,8 +144,10 @@ export class MyCard extends LitElement {
     return {
       title: { type: String },
       link: { type: String },
-      detail: { type: String },
+      buttonText: { type: String },
       description: { type: String },
+      image: { type: String },
+      fancy: { type: Boolean, reflect: true },
     };
   }
 }
